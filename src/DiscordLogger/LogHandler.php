@@ -35,12 +35,16 @@ class LogHandler extends AbstractProcessingHandler
         $this->ignoreExceptions = $channelConfig['ignore_exceptions'] ?? false;
     }
 
-    public function write(array|LogRecord $record): void
+    /**
+     * @param array|LogRecord $record
+     */
+    public function write($record): void
     {
         if ($record instanceof LogRecord) {
-            $record =  $record->toArray();
+            $record = $record->toArray();
         }
-        foreach($this->recordToMessage->buildMessages($record) as $message) {
+    
+        foreach ($this->recordToMessage->buildMessages($record) as $message) {
             try {
                 $this->discord->send($message);
             } catch (\Exception $e) {
