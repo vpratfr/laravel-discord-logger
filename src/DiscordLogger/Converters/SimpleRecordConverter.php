@@ -23,7 +23,7 @@ class SimpleRecordConverter extends AbstractRecordConverter
 
     protected function addMessageContent(Message $message, array $record): void
     {
-        $content = $record['formatted'] ?? '';
+        $content = $record['message'] ?? '';
         $emoji = $this->getRecordEmoji($record);
 
         $message->content($emoji === null ? "`$content`" : "$emoji `$content`");
