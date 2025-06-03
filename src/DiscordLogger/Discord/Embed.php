@@ -79,14 +79,14 @@ class Embed implements Arrayable
 
     public function image(string $url): Embed
     {
-        $this->image = ['url' => $url,];
+        $this->image = ['url' => $url];
 
         return $this;
     }
 
     public function thumbnail(string $url): Embed
     {
-        $this->thumbnail = ['url' => $url,];
+        $this->thumbnail = ['url' => $url];
         return $this;
     }
 
@@ -129,7 +129,7 @@ class Embed implements Arrayable
                 'timestamp'   => $this->timestamp,
             ],
             static function ($value) {
-                return $value !== null && $value !== "" && $value !== [];
+                return is_numeric($value) || !empty($value);
             });
     }
 
