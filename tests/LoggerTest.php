@@ -8,6 +8,7 @@ use MarvinLabs\DiscordLogger\Contracts\DiscordWebHook;
 use MarvinLabs\DiscordLogger\Logger;
 use MarvinLabs\DiscordLogger\Tests\Support\FakeDiscordWebHook;
 use RuntimeException;
+use PHPUnit\Framework\Attributes\Test;
 
 class LoggerTest extends TestCase
 {
@@ -34,7 +35,7 @@ class LoggerTest extends TestCase
         $this->monolog = ($this->logger)(['level' => 'INFO', 'url' => 'http://example.com']);
     }
 
-    /** @test */
+    #[Test]
     public function throws_exception_if_url_missing_from_channel_configuration()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -43,7 +44,7 @@ class LoggerTest extends TestCase
         ($this->logger)([]);
     }
 
-    /** @test */
+    #[Test]
     public function log_is_sent_to_discord()
     {
         $this->monolog->warning('This is a test');

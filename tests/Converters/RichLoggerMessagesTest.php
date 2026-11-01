@@ -8,15 +8,16 @@ use MarvinLabs\DiscordLogger\Converters\RichRecordConverter;
 use MarvinLabs\DiscordLogger\Tests\Support\MessageAssertions;
 use function json_encode;
 use const JSON_PRETTY_PRINT;
+use PHPUnit\Framework\Attributes\Test;
 
-class RichLoggerMessagesTest extends AbstractLoggerMessagesTest
+class RichLoggerMessagesTest extends AbstractLoggerMessagesTestCase
 {
     protected function getConverter(): RecordToMessage
     {
         return new RichRecordConverter($this->config);
     }
 
-    /** @test */
+    #[Test]
     public function sends_a_simple_message_for_log()
     {
         $this->config->set('discord-logger.colors.WARNING', 0x123456);
@@ -37,7 +38,7 @@ class RichLoggerMessagesTest extends AbstractLoggerMessagesTest
         ], $message);
     }
 
-    /** @test */
+    #[Test]
     public function includes_error_filename_and_line()
     {
         $this->config->set('discord-logger.stacktrace', 'inline');
@@ -49,7 +50,7 @@ class RichLoggerMessagesTest extends AbstractLoggerMessagesTest
         $this->assertStringContainsString($exception->getLine(), $message->embeds[1]->description);
     }
 
-    /** @test */
+    #[Test]
     public function includes_stacktrace_in_content_when_attachment_disabled()
     {
         $this->config->set('discord-logger.stacktrace', 'inline');
@@ -60,10 +61,10 @@ class RichLoggerMessagesTest extends AbstractLoggerMessagesTest
         $this->assertStringContainsString('[2000-01-01 12:13:14] Laravel.CRITICAL', $message->embeds[0]->title);
         $this->assertStringContainsString('This is a test', $message->embeds[0]->description);
 
-        $this->assertStringContainsString($exception->getTraceAsString(), $message->embeds[1]->description);
+        $this->assertStringContainsString("Stacktrace:\n" . strtok($exception->getTraceAsString(), "\n"), $message->embeds[1]->description);
     }
 
-    /** @test */
+    #[Test]
     public function includes_stacktrace_as_file_when_attachment_enabled()
     {
         $this->config->set('discord-logger.emojis.CRITICAL', null);
@@ -85,7 +86,7 @@ class RichLoggerMessagesTest extends AbstractLoggerMessagesTest
         $this->assertStringContainsString($exception->getTraceAsString(), $messages[1]->file['contents']);
     }
 
-    /** @test */
+    #[Test]
     public function includes_message_as_file_when_longer_than_2000_characters()
     {
         $this->config->set('discord-logger.emojis.CRITICAL', null);
@@ -108,7 +109,7 @@ class RichLoggerMessagesTest extends AbstractLoggerMessagesTest
         $this->assertStringContainsString($description, $messages[1]->file['contents']);
     }
 
-    /** @test */
+    #[Test]
     public function includes_only_message_when_less_than_2000_characters()
     {
         $this->config->set('discord-logger.emojis.CRITICAL', null);

@@ -6,6 +6,7 @@ use MarvinLabs\DiscordLogger\Discord\Embed;
 use MarvinLabs\DiscordLogger\Discord\Message;
 use MarvinLabs\DiscordLogger\Tests\Support\FakeDiscordWebHook;
 use MarvinLabs\DiscordLogger\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class FakeDiscordWebHookTest extends TestCase
 {
@@ -18,7 +19,7 @@ class FakeDiscordWebHookTest extends TestCase
         $this->discord = new FakeDiscordWebHook('http://example.com');
     }
 
-    /** @test */
+    #[Test]
     public function asserts_last_message_sent_is_same_as_expected()
     {
         $this->discord->send(Message::make()->content('this is a test'));
@@ -26,7 +27,7 @@ class FakeDiscordWebHookTest extends TestCase
         $this->discord->assertLastMessage(Message::make()->content('this is a test'));
     }
 
-    /** @test */
+    #[Test]
     public function asserts_last_message_sent_matches_given_array()
     {
         $this->discord->send(Message::make()
@@ -52,13 +53,13 @@ class FakeDiscordWebHookTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function asserts_that_no_message_has_been_sent()
     {
         $this->discord->assertNothingSent();
     }
 
-    /** @test */
+    #[Test]
     public function asserts_that_N_messages_have_been_sent()
     {
         $this->discord->send(Message::make());

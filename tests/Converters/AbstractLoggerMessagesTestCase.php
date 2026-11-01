@@ -9,8 +9,9 @@ use MarvinLabs\DiscordLogger\Tests\TestCase;
 use Monolog\Logger;
 use Throwable;
 use function json_encode;
+use PHPUnit\Framework\Attributes\Test;
 
-abstract class AbstractLoggerMessagesTest extends TestCase
+abstract class AbstractLoggerMessagesTestCase extends TestCase
 {
     /** @var \MarvinLabs\DiscordLogger\Contracts\RecordToMessage */
     protected $converter;
@@ -27,7 +28,7 @@ abstract class AbstractLoggerMessagesTest extends TestCase
 
     abstract protected function getConverter(): RecordToMessage;
 
-    /** @test */
+    #[Test]
     public function message_is_sent_with_expected_from_fields()
     {
         $this->config->set('discord-logger.from.name', 'John');

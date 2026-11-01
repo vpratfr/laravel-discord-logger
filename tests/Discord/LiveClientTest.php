@@ -8,9 +8,10 @@ use MarvinLabs\DiscordLogger\Discord\Embed;
 use MarvinLabs\DiscordLogger\Discord\GuzzleWebHook;
 use MarvinLabs\DiscordLogger\Discord\Message;
 use MarvinLabs\DiscordLogger\Tests\TestCase;
-use PHPUnit\Framework\SkippedTestError;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 
-/** @group RequiresNetwork */
+#[Group('RequiresNetwork')]
 class LiveClientTest extends TestCase
 {
     /** @var \MarvinLabs\DiscordLogger\Discord\GuzzleWebHook */
@@ -25,20 +26,20 @@ class LiveClientTest extends TestCase
         {
             // You can add that line to phpunit.xml and configure your logging.php config file accordingly
             // <server name="LOG_DISCORD_WEBHOOK_URL" value="https://discordapp.com/api/webhooks/<abc>/<xyz>"/>
-            throw new SkippedTestError('Live test is ignored as you have not configured a logging channel with a real webhook');
+            $this->markTestSkipped('Live test is ignored as you have not configured a logging channel with a real webhook');
         }
 
         $this->client = new GuzzleWebHook(new HttpClient(), $webHookUrl);
     }
 
-    /** @test */
+    #[Test]
     public function can_send_a_simple_message()
     {
         $this->client->send(Message::make('This is a test'));
         $this->expectNotToPerformAssertions();
     }
 
-    /** @test */
+    #[Test]
     public function can_send_a_message_with_file()
     {
         $this->client->send(Message::make('This is a test with a file')
@@ -46,7 +47,7 @@ class LiveClientTest extends TestCase
         $this->expectNotToPerformAssertions();
     }
 
-    /** @test */
+    #[Test]
     public function can_send_a_message_with_embeds()
     {
         $this->client->send(
