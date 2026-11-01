@@ -7,10 +7,11 @@ use MarvinLabs\DiscordLogger\Contracts\DiscordWebHook;
 use MarvinLabs\DiscordLogger\Discord\Embed;
 use MarvinLabs\DiscordLogger\Discord\Message;
 use MarvinLabs\DiscordLogger\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class MessageTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function content_is_truncated_to_2000_characters()
     {
         $longString = Str::random(DiscordWebHook::MAX_CONTENT_LENGTH + 500);
@@ -20,7 +21,7 @@ class MessageTest extends TestCase
         $this->assertLessThanOrEqual(DiscordWebHook::MAX_CONTENT_LENGTH, strlen($message->content));
     }
 
-    /** @test */
+    #[Test]
     public function can_convert_to_array()
     {
         $embed = Embed::make()
@@ -55,7 +56,7 @@ class MessageTest extends TestCase
             $message->toArray());
     }
 
-    /** @test */
+    #[Test]
     public function can_convert_message_without_embeds_to_array()
     {
         $message = Message::make()

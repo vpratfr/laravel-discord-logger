@@ -13,6 +13,7 @@ use MarvinLabs\DiscordLogger\Discord\Message;
 use MarvinLabs\DiscordLogger\Tests\TestCase;
 use function explode;
 use function json_decode;
+use PHPUnit\Framework\Attributes\Test;
 
 class GuzzleWebHookTest extends TestCase
 {
@@ -35,7 +36,7 @@ class GuzzleWebHookTest extends TestCase
         $this->discord = new GuzzleWebHook($httpClient, 'http://example.com');
     }
 
-    /** @test */
+    #[Test]
     public function forms_json_request_when_no_file()
     {
         $this->discord->send(Message::make()->content('No files attached'));
@@ -51,7 +52,7 @@ class GuzzleWebHookTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function forms_multipart_request_when_file_present()
     {
         $this->discord->send(Message::make()->content('File attached')->file('test', 'test.txt'));
