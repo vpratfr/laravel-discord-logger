@@ -52,6 +52,9 @@ You must add a new channel to your `config/logging.php` file:
         'level'  => 'debug',
         'url'    => env('LOG_DISCORD_WEBHOOK_URL'),
         'ignore_exceptions' => env('LOG_DISCORD_IGNORE_EXCEPTIONS', false),
+        'throttle' => env('LOG_DISCORD_THROTTLE', false),
+        'throttle_seconds' => env('LOG_DISCORD_THROTTLE_SECONDS', 3600),
+        'throttle_cache_store' => env('LOG_DISCORD_THROTTLE_CACHE_STORE'),
     ],
 ];
 ```
@@ -61,6 +64,16 @@ You can then provide the web-hook URL in your `.env` file:
 ```
 LOG_DISCORD_WEBHOOK_URL=https://discordapp.com/api/webhooks/abcd/1234
 ```
+
+#### Throttling repeated messages
+
+When `throttle` is enabled, the same log entry is sent to Discord at most once per `throttle_seconds`
+(default: 3600). Entries carrying an exception in their context are identified by the exception class, file and
+line; other entries by their level and message.
+
+Throttling state is kept in your Laravel cache. Use `throttle_cache_store` to pick a store (e.g. `redis`), or leave
+it empty to use the default one. A store shared between your servers / workers (redis, memcached, database) is
+recommended so that throttling applies across all of them. If the cache is unavailable, messages are sent anyway.
 
 ### Use the logger channel
 
